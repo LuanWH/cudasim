@@ -104,12 +104,13 @@ u64 test_cpu(u32 n_steps, u32 n_skip, u32 n_sims, u32 n_nodes, float * h_weights
 
 	for(u32 i = 0; i < n_steps; ++i)
 	{
-		for(int i_sim = 0; i_sim < n_sims; ++i_sim){
+		for(int i_sim = 0; i_sim < n_sims; ++i_sim)
+		{
 			for (int i_node=0; i_node<n_nodes; i_node++)
 			{
 				float x = h_x[i_node*n_sims + i_sim], H=0.0;
 				for (int j=0; j<n_nodes; j++)
-					H += h_weights[i*n_nodes+j] * h_x[j*n_sims + i_sim];
+					H += h_weights[i_node*n_nodes+j] * h_x[j*n_sims + i_sim];
 				h_x[i_node*n_sims + i_sim] = clamp(x + 0.1 * sdotfun(x, 0.053, H, 0.3, 1.0)*(1e-3), 0.0, 1.0);
 			}
 		}
@@ -154,7 +155,7 @@ int main(int argc, char * argv[]){
 	u32 n_weights = n_nodes * n_nodes;
 	u32 n_x = n_nodes * n_sims;
 	u32 n_time = n_steps/n_skip + 1;
-	u32 n_dat = (n_steps/n_skip + 1) * n_nodes * n_sims;
+	u32 n_dat = (n_steps/n_skip + 1) * n_x;
 
 	float * h_weights = (float *) malloc(sizeof(float) * n_weights);
 	float * h_x = (float *) malloc(sizeof(float) * n_x);
@@ -199,8 +200,6 @@ int main(int argc, char * argv[]){
  * CPU - 100 steps - 16124 ms
  * test_1 - 100 steps - 1731 ms
  *
- *
- *
- *
- *
+ * CPU - 1000 steps - 164836 ms
+ * test_1 - 1000 steps - 15581 ms
  */
