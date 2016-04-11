@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define THREADS_PER_BLOCK 128
+#define THREADS_PER_BLOCK 256
 
 typedef unsigned int u32;
 typedef unsigned long long u64;
@@ -19,7 +19,7 @@ float sdotfun(float s0, float g, float H, float I, float w)
 }
 
 __host__ __device__ __inline__
-float clamp(float x, float up, float low)
+float clamp(float x, float low, float up)
 {
 	if(x < low) return low;
 	if(x > up) return up;
@@ -167,8 +167,8 @@ int main(int argc, char * argv[]){
 	float * dats_cpu = (float *) malloc(sizeof(float) * n_dat);
 	float * h_x_cpu = (float *) malloc(sizeof(float) * n_x);
 	memcpy(h_x_cpu, h_x, sizeof(float) * n_x);
-	u64 test_cpu_run_time = test_cpu(n_steps_cpu, n_skip, n_sims, n_nodes, h_weights, n_weights, h_x_cpu, n_x, times_cpu,  dats_cpu);
-	printf("Test cpu takes %lu ms to complete %u step(s).\n", test_cpu_run_time, n_steps_cpu);
+//u64 test_cpu_run_time = test_cpu(n_steps_cpu, n_skip, n_sims, n_nodes, h_weights, n_weights, h_x_cpu, n_x, times_cpu,  dats_cpu);
+	//printf("Test cpu takes %lu ms to complete %u step(s).\n", test_cpu_run_time, n_steps_cpu);
 
 	float * times_1 = (float *) malloc(sizeof(float) * n_time);
 	float * dats_1 = (float *) malloc(sizeof(float) * n_dat);
